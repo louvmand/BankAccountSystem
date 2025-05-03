@@ -14,6 +14,10 @@ public class TransferService {
     @Inject
     EntityManager entityManager;
 
+    public TransferService(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     @Transactional
     public void deposit(String accountNumber, BigDecimal amount) {
         Account account = entityManager.find(Account.class, accountNumber);

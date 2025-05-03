@@ -14,6 +14,10 @@ public class AccountService {
     @Inject
     EntityManager entityManager;
 
+    public AccountService(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     @Transactional
     public void createAccount(Account account) {
         entityManager.persist(account);

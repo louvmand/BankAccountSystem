@@ -1,33 +1,42 @@
 package org.example.account;
 
+import io.quarkus.test.junit.QuarkusTest;
 import jakarta.persistence.EntityManager;
 import org.example.account.domain.Account;
+import org.example.account.AccountService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@QuarkusTest
 public class AccountServiceTest {
 
     @Mock
     private EntityManager entityManager;
 
-    @InjectMocks
     private AccountService accountService;
-
     private Account testAccount;
+    private AutoCloseable mocks;
 
     @BeforeEach
     void setUp() {
+        mocks = MockitoAnnotations.openMocks(this);
+        accountService = new AccountService(entityManager);
         testAccount = new Account("ACC123", new BigDecimal("1000"));
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        if (mocks != null) {
+            mocks.close();
+        }
     }
 
     @Test
